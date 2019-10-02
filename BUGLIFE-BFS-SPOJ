@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+using namespace std;
+class graph
+{
+    unordered_map<int,list<int>> m;
+    public:
+    graph(){}
+
+    void addedge(int src,int dest)
+    {
+        m[src].push_back(dest);
+        m[dest].push_back(src);
+    }
+
+    bool bipartite(int src,bool visited[],int color[])
+    {
+      queue<int> q;
+      q.push(src);
+      visited[src]=true;
+      color[src]=1;
+      while(!q.empty())
+      {
+          int node=q.front();
+          q.pop();
+          for(auto ne:m[node])
+          {
+              if(!visited[ne] && color[ne]==-1)
+              {
+                  visited[ne]=true;
+                  color[ne]=1-color[node];
+                  q.push(ne);
+              }
+
+            else if(visited[ne] && color[ne]==color[node] && ne!=node)
+              return false;
+          }
+      }
+      return true;
+    }
+
+};
+bool f()
+{
+    int n,m,a,b;
+    cin>>n>>m;
+    graph g;
+    bool *visited=new bool[n+1];
+    int *color=new int[n+1];
+    for(int i=0;i<=n;i++)
+    {
+        color[i]=-1;
+        visited[i]=false;
+    }
+    for(int i=1;i<=n;i++)
+    {
+        g.addedge(i,i);
+    }
+    while(m--)
+    {
+        cin>>a>>b;
+        g.addedge(a,b);
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(!visited[i])
+        {
+           bool bipart=g.bipartite(i,visited,color);
+           if(!bipart)
+           return false;
+        }
+    }
+    return true;
+}
+
+int main()
+{ int T,j=1;
+cin>>T;
+while(j<=T)
+{
+    bool b=f();
+    if(!b)
+    {
+       cout<<"Scenario #"<<j<<":\n"<<"Suspicious bugs found!\n";
+    }
+    else
+    {
+         cout<<"Scenario #"<<j<<":\n"<<"No suspicious bugs found!\n";
+    }
+    j++;
+}
+
+}
