@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+int dx[]={2,2,-2,-2,-1,1,-1,1};
+int dy[]={-1,1,-1,1,2,2,-2,-2};
+int main()
+{
+    int T;
+    cin>>T;
+    int arr[8][8];
+    char c1,c2;
+    int y1,y2,i=0,j=0,flag=0;
+    while(T--)
+    {
+        flag=0;
+        cin>>c1>>y1;
+    cin>>c2>>y2;
+    y1=y1-1;
+    y2=y2-1;
+    int x1=c1-'a';
+    int x2=c2-'a';
+    for(i=0;i<8;i++)
+    for(j=0;j<8;j++)
+    arr[i][j]=-1;
+    arr[x1][y1]=0;
+    queue<pair<int,int>> q;
+    q.push(make_pair(x1,y1));
+    while(!q.empty())
+    {
+       auto node=q.front();
+       int I=node.first;
+       int J=node.second;
+      // cout<<I<<"   "<<J;
+       q.pop();
+       for(i=0;i<8;i++)
+       {
+           int p=I+dx[i];
+           int s=J+dy[i];
+           if(p>=0 && p<8 && s>=0 && s<8)
+           {
+               if(arr[p][s]==-1)
+               {q.push(make_pair(p,s));
+                   arr[p][s]=arr[I][J]+1;
+                   if(p==x2 && s==y2)
+                    {
+
+                         flag=1;
+                         break;
+                    }
+               }
+               if(flag)
+                break;
+           }
+           if(flag)
+            break;
+       }
+        if(flag)
+            break;
+    }
+         cout<<arr[x2][y2]<<"\n";
+    }
+}
